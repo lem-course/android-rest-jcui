@@ -1,9 +1,11 @@
 package ep.rest
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -29,27 +31,30 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            DisplayBooks()
+            DisplayBooks(this)
         }
     }
 }
 
+
 @Composable
-fun DisplayBooks(viewModel: ListBooksViewModel = viewModel()) {
+fun DisplayBooks(activity: MainActivity, viewModel: ListBooksViewModel = viewModel()) {
     LaunchedEffect(Unit) { viewModel.getAll() }
 
     Scaffold(floatingActionButton = {
-
-        FloatingActionButton(onClick = { println("Dodajamo!") }) {
+        FloatingActionButton(onClick = {
+            println("Dodajamo!")
+            activity.startActivity(Intent(activity, MainActivity::class.java))
+        }) {
             Icon(
                 Icons.Default.Add,
                 contentDescription = "Vnesi knjigo"
             )
         }
-    }) {
+    }) { paddingValues ->
         LazyColumn {
             items(viewModel.books.value) {
-                Book(it)
+                Book(it, paddingValues)
             }
         }
     }
@@ -57,12 +62,12 @@ fun DisplayBooks(viewModel: ListBooksViewModel = viewModel()) {
 
 
 @Composable
-fun Book(book: Book) {
+fun Book(book: Book, paddingValues: PaddingValues = PaddingValues()) {
     Column {
         Text(
             book.title,
             fontSize = 28.sp,
-            modifier = Modifier.padding(5.dp)
+            modifier = Modifier.padding(paddingValues)
         )
         Row {
             Text(
@@ -71,7 +76,7 @@ fun Book(book: Book) {
                 textAlign = TextAlign.Left,
                 modifier = Modifier
                     .weight(3f)
-                    .padding(5.dp)
+                    .padding(paddingValues)
             )
             Text(
                 "%.2f EUR".format(book.price),
@@ -79,7 +84,7 @@ fun Book(book: Book) {
                 textAlign = TextAlign.Right,
                 modifier = Modifier
                     .weight(2f)
-                    .padding(5.dp)
+                    .padding(paddingValues)
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -90,5 +95,5 @@ fun Book(book: Book) {
 @Preview
 @Composable
 private fun Show() {
-    DisplayBooks()
+//    DisplayBooks()
 }
