@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,25 +32,25 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            DisplayBooks(this)
+            DisplayBooks()
         }
     }
 }
 
-
 @Composable
-fun DisplayBooks(activity: MainActivity, viewModel: ListBooksViewModel = viewModel()) {
+fun DisplayBooks(viewModel: ListBooksViewModel = viewModel()) {
+    // referenca na aktivnost
+    val activity = LocalContext.current
+
+    // takoj ob prikazu naloži knjige
     LaunchedEffect(Unit) { viewModel.getAll() }
 
+    // Vmesnik
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = {
-            println("Dodajamo!")
-            activity.startActivity(Intent(activity, MainActivity::class.java))
+            activity.startActivity(Intent(activity, BookFormActivity::class.java))
         }) {
-            Icon(
-                Icons.Default.Add,
-                contentDescription = "Vnesi knjigo"
-            )
+            Icon(Icons.Default.Add, contentDescription = "Dodaj")
         }
     }) { paddingValues ->
         LazyColumn {
@@ -60,15 +61,10 @@ fun DisplayBooks(activity: MainActivity, viewModel: ListBooksViewModel = viewMod
     }
 }
 
-
 @Composable
 fun Book(book: Book, paddingValues: PaddingValues = PaddingValues()) {
     Column {
-        Text(
-            book.title,
-            fontSize = 28.sp,
-            modifier = Modifier.padding(paddingValues)
-        )
+        Text(book.title, fontSize = 28.sp, modifier = Modifier.padding(paddingValues))
         Row {
             Text(
                 book.author,
@@ -90,7 +86,6 @@ fun Book(book: Book, paddingValues: PaddingValues = PaddingValues()) {
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
-
 
 @Preview
 @Composable

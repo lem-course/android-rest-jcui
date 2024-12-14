@@ -10,9 +10,10 @@ object BookService {
     interface RestApi {
 
         companion object {
-            // AVD emulator
-            // Potrebno je še nastaviti posredovanje števil vrat
-            const val URL = "http://10.0.2.2:8080/netbeans/mvc-rest/api/"
+            // TODO: Nastavite posredovanje števil vrat v programu VirtualBox
+            const val ADDRESS = "http://10.0.2.2:8080"
+            const val PATH = "/netbeans/mvc-rest/api/"
+            const val URL = ADDRESS + PATH
         }
 
         @GET("books")

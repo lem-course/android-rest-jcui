@@ -3,10 +3,10 @@ package ep.rest
 import java.io.Serializable
 
 data class Book(
-    val id: Int = 0,
-    val title: String = "",
-    val year: Int = 0,
-    val author: String = "",
-    val description: String = "",
-    val price: Double = 0.0
+    var id: Int = 0,
+    var title: String = "",
+    var year: Int = 0,
+    var author: String = "",
+    var description: String = "",
+    var price: Double = 0.0
 ) : Serializable
