@@ -46,9 +46,6 @@ class BookViewModel : ViewModel() {
     var editResult = MutableStateFlow<Result<Int>?>(null)
         private set
 
-    var deleteResult = MutableStateFlow<Result<Unit>?>(null)
-        private set
-
     fun insert() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -97,13 +94,13 @@ class BookViewModel : ViewModel() {
 
                 // Pošlji zahtevo
                 val response = BookService.instance.update(
-                        book.value.id,
-                        book.value.author,
-                        book.value.title,
-                        book.value.price,
-                        book.value.year,
-                        book.value.description
-                    ).awaitResponse()
+                    book.value.id,
+                    book.value.author,
+                    book.value.title,
+                    book.value.price,
+                    book.value.year,
+                    book.value.description
+                ).awaitResponse()
 
                 // Vnos uspel, sporočimo URL novega vira
                 if (response.isSuccessful) {
@@ -113,17 +110,6 @@ class BookViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 editResult.value = Result.failure(e)
-            }
-        }
-    }
-
-    fun delete() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                BookService.instance.delete(book.value.id).await()
-                deleteResult.value = Result.success(Unit)
-            } catch (e: Exception) {
-                deleteResult.value = Result.failure(e)
             }
         }
     }

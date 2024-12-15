@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -15,7 +14,6 @@ import androidx.compose.material3.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -45,21 +43,6 @@ fun BookDetailScreen(viewModel: BookViewModel = viewModel()) {
 
     // prikazu naloži knjigo
     LaunchedEffect(Unit) { viewModel.get(activity.intent.getIntExtra("id", 0)) }
-
-    // rezultat brisanja
-    val deleteResult = viewModel.deleteResult.collectAsState().value
-    LaunchedEffect(deleteResult) {
-        deleteResult?.let {
-            if (it.isSuccess) {
-                // pojdimo na zacetno aktivnost
-                activity.startActivity(Intent(activity, MainActivity::class.java))
-            } else if (it.isFailure) {
-                // prikažimo napako
-                Toast.makeText(activity, "Napaka: Brisanje ni uspelo", Toast.LENGTH_SHORT).show()
-                println("Failure: ${it.exceptionOrNull()?.message}")
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -109,7 +92,7 @@ fun BookDetailScreen(viewModel: BookViewModel = viewModel()) {
                 val dialog = AlertDialog.Builder(activity)
                 dialog.setTitle("Potrdi izbirs")
                 dialog.setMessage("Si prepričan?")
-                dialog.setPositiveButton("Briši") { _, _ -> viewModel.delete() }
+                dialog.setPositiveButton("Briši") { _, _ -> println("TODO: Brisanje!") }
                 dialog.setNegativeButton("Prekliči", null)
                 dialog.create().show()
             },
