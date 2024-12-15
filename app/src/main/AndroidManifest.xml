@@ -16,12 +16,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".BookEditActivity"
+            android:exported="false"
+            android:label="@string/title_activity_book_edit"
+            android:theme="@style/Theme.Androidrestjcui" />
+        <activity
             android:name=".BookDetailActivity"
             android:exported="false"
             android:label="@string/title_activity_book_detail"
             android:theme="@style/Theme.Androidrestjcui" />
         <activity
-            android:name=".BookFormActivity"
+            android:name=".BookAddActivity"
             android:exported="false"
             android:label="@string/title_activity_book_detail"
             android:theme="@style/Theme.Androidrestjcui" />

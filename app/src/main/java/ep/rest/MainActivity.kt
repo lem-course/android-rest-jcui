@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun DisplayBooks(viewModel: ListBooksViewModel = viewModel()) {
+fun DisplayBooks(viewModel: MainActivityViewModel = viewModel()) {
     // referenca na aktivnost
     val activity = LocalContext.current
 
@@ -49,7 +49,7 @@ fun DisplayBooks(viewModel: ListBooksViewModel = viewModel()) {
     // Vmesnik
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = {
-            activity.startActivity(Intent(activity, BookFormActivity::class.java))
+            activity.startActivity(Intent(activity, BookAddActivity::class.java))
         }) {
             Icon(Icons.Default.Add, contentDescription = "Dodaj")
         }

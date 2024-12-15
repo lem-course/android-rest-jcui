@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import retrofit2.await
 
 
-class ListBooksViewModel : ViewModel() {
+class MainActivityViewModel : ViewModel() {
     val books: MutableState<List<Book>> = mutableStateOf(emptyList())
 
     fun getAll() {

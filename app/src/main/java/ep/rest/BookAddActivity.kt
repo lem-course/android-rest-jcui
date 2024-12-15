@@ -22,18 +22,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-class BookFormActivity : ComponentActivity() {
+class BookAddActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            BookForm()
+            AddBook()
         }
     }
 }
 
 @Composable
-fun BookForm(viewModel: BookFormViewModel = viewModel()) {
+fun AddBook(viewModel: BookViewModel = viewModel()) {
     // referenca na aktivnost
     val activity = LocalContext.current
 
@@ -42,10 +42,8 @@ fun BookForm(viewModel: BookFormViewModel = viewModel()) {
     LaunchedEffect(saveResult) {
         saveResult?.let {
             if (it.isSuccess) {
-                // pojdimo na aktivnost
                 activity.startActivity(Intent(activity, MainActivity::class.java))
             } else if (it.isFailure) {
-                // prikažimo napako
                 Toast.makeText(
                     activity,
                     "Napaka: ${it.exceptionOrNull()?.message}",
@@ -56,6 +54,11 @@ fun BookForm(viewModel: BookFormViewModel = viewModel()) {
         }
     }
 
+    BookForm(viewModel, viewModel::insert)
+}
+
+@Composable
+fun BookForm(viewModel: BookViewModel = viewModel(), buttonFunction: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +94,7 @@ fun BookForm(viewModel: BookFormViewModel = viewModel()) {
         )
 
         OutlinedTextField(
-            value = viewModel.book.value.year.toString(),
+            value = viewModel.inputYear.value,
             onValueChange = viewModel::onYearChange,
             label = { Text("Leto izdaje") },
             modifier = Modifier
@@ -113,7 +116,7 @@ fun BookForm(viewModel: BookFormViewModel = viewModel()) {
         )
 
         Button(
-            onClick = viewModel::onSaveClick,
+            onClick = buttonFunction,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">android-rest-jcui</string>
     <string name="title_activity_book_detail">BookDetailActivity</string>
+    <string name="title_activity_book_edit">BookEditActivity</string>
 </resources>

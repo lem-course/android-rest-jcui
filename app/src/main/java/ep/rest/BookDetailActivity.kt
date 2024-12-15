@@ -37,7 +37,7 @@ class BookDetailActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookDetailScreen(viewModel: BookDetailViewModel = viewModel()) {
+fun BookDetailScreen(viewModel: BookViewModel = viewModel()) {
     // referenca na aktivnost
     val activity = LocalContext.current as Activity
 
@@ -88,7 +88,11 @@ fun BookDetailScreen(viewModel: BookDetailViewModel = viewModel()) {
 
     Box(modifier = Modifier.fillMaxSize()) {
         FloatingActionButton(
-            onClick = {},
+            onClick = {
+                val intent = Intent(activity, BookEditActivity::class.java)
+                intent.putExtra("id", viewModel.book.value.id)
+                activity.startActivity(intent)
+            },
             modifier = Modifier
                 .padding(10.dp)
                 .align(Alignment.BottomEnd),
