@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -55,15 +56,23 @@ fun DisplayBooks(viewModel: ListBooksViewModel = viewModel()) {
     }) { paddingValues ->
         LazyColumn {
             items(viewModel.books.value) {
-                Book(it, paddingValues)
+                Book(it, {
+                    val intent = Intent(activity, BookDetailActivity::class.java)
+                    intent.putExtra("id", it.id)
+                    activity.startActivity(intent)
+                }, paddingValues)
             }
         }
     }
 }
 
 @Composable
-fun Book(book: Book, paddingValues: PaddingValues = PaddingValues()) {
-    Column {
+fun Book(book: Book, onClick: () -> Unit, paddingValues: PaddingValues = PaddingValues()) {
+    Column(
+        modifier = Modifier
+            .clickable { onClick() }
+            .padding(5.dp)
+    ) {
         Text(book.title, fontSize = 28.sp, modifier = Modifier.padding(paddingValues))
         Row {
             Text(
@@ -72,7 +81,7 @@ fun Book(book: Book, paddingValues: PaddingValues = PaddingValues()) {
                 textAlign = TextAlign.Left,
                 modifier = Modifier
                     .weight(3f)
-                    .padding(paddingValues)
+                    .padding(5.dp)
             )
             Text(
                 "%.2f EUR".format(book.price),
@@ -80,7 +89,7 @@ fun Book(book: Book, paddingValues: PaddingValues = PaddingValues()) {
                 textAlign = TextAlign.Right,
                 modifier = Modifier
                     .weight(2f)
-                    .padding(paddingValues)
+                    .padding(5.dp)
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -90,5 +99,5 @@ fun Book(book: Book, paddingValues: PaddingValues = PaddingValues()) {
 @Preview
 @Composable
 private fun Show() {
-//    DisplayBooks()
+    DisplayBooks()
 }

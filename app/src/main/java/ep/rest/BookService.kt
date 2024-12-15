@@ -11,9 +11,7 @@ object BookService {
 
         companion object {
             // TODO: Nastavite posredovanje števil vrat v programu VirtualBox
-            const val ADDRESS = "http://10.0.2.2:8080"
-            const val PATH = "/netbeans/mvc-rest/api/"
-            const val URL = ADDRESS + PATH
+            const val URL = "http://10.0.2.2:8080/netbeans/mvc-rest/api/"
         }
 
         @GET("books")
@@ -21,6 +19,9 @@ object BookService {
 
         @GET("books/{id}")
         fun get(@Path("id") id: Int): Call<Book>
+
+        @DELETE("books/{id}")
+        fun delete(@Path("id") id: Int): Call<Unit>
 
         @FormUrlEncoded
         @POST("books")
@@ -30,7 +31,7 @@ object BookService {
             @Field("price") price: Double,
             @Field("year") year: Int,
             @Field("description") description: String
-        ): Call<Void>
+        ): Call<Unit>
 
         @FormUrlEncoded
         @PUT("books/{id}")
@@ -41,7 +42,7 @@ object BookService {
             @Field("price") price: Double,
             @Field("year") year: Int,
             @Field("description") description: String
-        ): Call<Void>
+        ): Call<Unit>
     }
 
     val instance: RestApi by lazy {

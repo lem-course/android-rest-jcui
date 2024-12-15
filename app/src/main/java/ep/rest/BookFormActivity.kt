@@ -1,6 +1,8 @@
 package ep.rest
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -31,19 +33,24 @@ class BookFormActivity : ComponentActivity() {
 }
 
 @Composable
-fun BookForm(viewModel: BookAddViewModel = viewModel()) {
+fun BookForm(viewModel: BookFormViewModel = viewModel()) {
     // referenca na aktivnost
     val activity = LocalContext.current
 
     // rezultat poizvedbe za dodajanje knjige
     val saveResult = viewModel.addResult.collectAsState().value
     LaunchedEffect(saveResult) {
-        saveResult.let {
+        saveResult?.let {
             if (it.isSuccess) {
                 // pojdimo na aktivnost
-                println("Success: ${it.getOrNull()}")
+                activity.startActivity(Intent(activity, MainActivity::class.java))
             } else if (it.isFailure) {
                 // prikažimo napako
+                Toast.makeText(
+                    activity,
+                    "Napaka: ${it.exceptionOrNull()?.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
                 println("Failure: ${it.exceptionOrNull()?.message}")
             }
         }
@@ -55,7 +62,7 @@ fun BookForm(viewModel: BookAddViewModel = viewModel()) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         OutlinedTextField(
-            value = viewModel.title.value,
+            value = viewModel.book.value.title,
             onValueChange = viewModel::onTitleChange,
             label = { Text("Naslov") },
             modifier = Modifier
@@ -64,7 +71,7 @@ fun BookForm(viewModel: BookAddViewModel = viewModel()) {
         )
 
         OutlinedTextField(
-            value = viewModel.author.value,
+            value = viewModel.book.value.author,
             onValueChange = viewModel::onAuthorChange,
             label = { Text("Avtor") },
             modifier = Modifier
@@ -74,7 +81,7 @@ fun BookForm(viewModel: BookAddViewModel = viewModel()) {
         )
 
         OutlinedTextField(
-            value = viewModel.price.value.toString(),
+            value = viewModel.inputPrice.value,
             onValueChange = viewModel::onPriceChange,
             label = { Text("Cena") },
             modifier = Modifier
@@ -84,7 +91,7 @@ fun BookForm(viewModel: BookAddViewModel = viewModel()) {
         )
 
         OutlinedTextField(
-            value = viewModel.year.value.toString(),
+            value = viewModel.book.value.year.toString(),
             onValueChange = viewModel::onYearChange,
             label = { Text("Leto izdaje") },
             modifier = Modifier
@@ -94,7 +101,7 @@ fun BookForm(viewModel: BookAddViewModel = viewModel()) {
         )
 
         OutlinedTextField(
-            value = viewModel.description.value,
+            value = viewModel.book.value.description,
             onValueChange = viewModel::onDescriptionChange,
             label = { Text("Opis") },
             modifier = Modifier
