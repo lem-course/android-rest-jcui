@@ -64,7 +64,8 @@ dependencies {
     // viewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    implementation("androidx.compose.material3:material3:1.0.0")
-    implementation("androidx.compose.material:material:1.1.0")
+    // material design 3
+    implementation(libs.material3)
+    implementation(libs.androidx.material)
 
 }
